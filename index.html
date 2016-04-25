@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+  </head>
+
+  <body>
+    <div ng-app="cert">
+      <h2>Certificates:</h2>
+      <div id="main" ng-controller="MainController as main">
+
+        <ul class="unstyled">
+          <li ng-repeat="(key, value) in main.items">
+            <label>
+              <button class="btn btn-default" ng-click="main.show(key)">{{key}}</button>
+            </label>
+          </li>
+        </ul>
+
+        <h3>Details</h3>
+        <div id="details">
+          <ul class="unstyled">
+            <li ng-repeat="(key, value) in main.currentParsedItem">
+              <label>
+                <span>{{value}}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+     </div>
+
+     <div id="file-upload">
+      Drug and drop your .cer file here
+     </div>
+
+     <script type="text/javascript" src="upload.js"></script>
+    <script type="text/javascript" src="oids.js"></script>
+    <script type="text/javascript" src="int10.js"></script>
+    <script type="text/javascript" src="asn1.js"></script>
+    <script type="text/javascript" src="dom.js"></script>
+
+  </body>
+</html>
