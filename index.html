@@ -1,69 +1,76 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-   <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     <!-- Latest compiled and minified JavaScript -->
     <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script-->
-
+    <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-    <script src="index.js"></script>
-    <link rel="stylesheet" href="index.css">
-  </head>
+    <!-- index JS -->
+    <script src="js/index.js"></script>
+    <!-- index CSS -->
+    <link rel="stylesheet" href="styles/index.css">
+</head>
 
-  <body>
-    <div ng-app="cert">
-      
-      <div id="main" ng-controller="MainController as main">
+<body>
+<div ng-app="cert">
+
+    <div id="main" ng-controller="MainController as main">
         <div class="row">
-          <!-- CERTIFICATES -->
-          <div class="col-md-6">
-            <h3>Certificates: {{ main.items.length }}</h3>
-            <ul class="nav nav-pills nav-stacked">
-              <li ng-repeat="(key, value) in main.items">
-                  <span class="btn btn-default btn-block btn-xs" ng-click="main.show(key)">{{key}}</span>
-              </li>
-            </ul>
-          </div>
-          <!-- DETAILS -->
-          <div class="col-md-6">
-            <h3>Details</h3>
-            <div id="details">
-              <ul class="nav nav-pills nav-stacked">
-                <li ng-repeat="(key, value) in main.currentParsedItem">
-                  <label>
-                    <span>{{value}}</span>
-                  </label>
-                </li>
-              </ul>
+            <!-- CERTIFICATES -->
+            <div class="col-md-6">
+                <h3>Certificates: {{ main.items.length }}</h3>
+                <ul class="nav nav-pills nav-stacked">
+                    <li ng-repeat="(key, value) in main.items">
+                        <span class="btn btn-default btn-block btn-xs" ng-click="main.show(key)">{{key}}</span>
+                    </li>
+                </ul>
             </div>
-          </div>
-        </div>
-        <hr />
 
-        <a class="btn btn-success btn-lg btn-block" href="" ng-hide="showAdd" ng-click="showUpload = !showUpload; showAdd = !showAdd">
-          Add new certificate
+            <!-- DETAILS -->
+            <div class="col-md-6">
+                <h3>Details</h3>
+
+                <div id="details">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li ng-repeat="(key, value) in main.currentParsedItem">
+                            <label>
+                                <span>{{value}}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr/>
+
+        <!-- TOOLS -->
+        <a class="btn btn-success btn-lg btn-block" href="" ng-hide="showAdd"
+           ng-click="showUpload = !showUpload; showAdd = !showAdd">
+            Add new certificate
         </a>
 
         <div id="file-upload" ng-show="showUpload">
-         <blockquote>
-          <p>Drug and drop your .cer file here</p>
-         </blockquote>
+            <blockquote>
+                <p>Drug and drop your .cer file here</p>
+            </blockquote>
         </div>
 
-      </div>
-     </div>
+    </div>
+</div>
 
-    <script type="text/javascript" src="upload.js"></script>
-    <script type="text/javascript" src="oids.js"></script>
-    <script type="text/javascript" src="int10.js"></script>
-    <script type="text/javascript" src="asn1.js"></script>
-    <script type="text/javascript" src="dom.js"></script>
+<script type="text/javascript" src="js/parse.js"></script>
 
-  </body>
+<script type="text/javascript" src="libs/asn/oids.js"></script>
+<script type="text/javascript" src="libs/asn/int10.js"></script>
+<script type="text/javascript" src="libs/asn/asn1.js"></script>
+<script type="text/javascript" src="libs/asn/dom.js"></script>
+
+</body>
 </html>
