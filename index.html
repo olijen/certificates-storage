@@ -56,11 +56,12 @@
             Add new certificate
         </a>
 
-        <div id="file-upload" ng-show="showUpload">
+        <div id="file-upload" ng-show="showUpload" on-read-file="main.uploadEnd($cert)">
             <blockquote>
                 <p>Drug and drop your .cer file here</p>
             </blockquote>
         </div>
+
 
     </div>
 </div>
