@@ -1,31 +1,49 @@
-//Main controller
+//---INIT
+
+angular
+    .module('cert', [])
+    .controller('MainController', MainController)
+    .directive('onReadFile', onReadFile)
+;
+
+//---Main controller
+
 function MainController() {
     var main = this;
 
+    //Model - binary data
     main.items = JSON.parse(window.localStorage.getItem('cerf')) || {};
 
+    //You can add any OID attribute and clarify the label
     main.currentParsedItem = {
-        commonName:         null,
-        countryName:        null,
-        localityName:       null,
-        organizationName:   null,
-        serialNumber:       null,
+        commonName:         {label: 'Common name'},
+        countryName:        {label: 'Country name'},
+        localityName:       {label: 'Locality name'},
+        organizationName:   {label: 'Organization name'},
+        serialNumber:       {label: 'Serial number'},
+        dateStart:          {label: 'Date start'},
+        dateEnd:            {label: 'Date end'},
     };
 
-    main.addCertificate = function () {
+    main.showCurrentItem = false;
 
-    };
-
-    main.show = function (key) {
+    //Method to show attributes of certificate
+    main.show = function (key, e) {
         //Parse item
-        var asn1 = ASN1.decode(main.items[key]),
+        var asn1       = ASN1.decode(main.items[key]),
             oidsValues = getOIDValues(asn1);
         //Reload model
         angular.forEach(main.currentParsedItem, function (value, key) {
-            if (oidsValues[key] !== undefined)
-                main.currentParsedItem[key] = oidsValues[key];
-            else main.currentParsedItem[key] = null;
+            main.currentParsedItem[key]['value'] = (oidsValues[key] !== undefined) ? oidsValues[key] : null;
         });
+        //Render logic
+        main.showCurrentItem = true;
+        var oldChecked = document
+            .getElementById('certificate-list')
+            .getElementsByClassName('disabled');
+        if (oldChecked.length !== 0)
+            oldChecked[0].classList.remove('disabled');
+        e.target.classList.add("disabled");
     };
 
     main.uploadEnd = function($cert) {
@@ -50,16 +68,20 @@ function onReadFile($parse) {
 
                 for (; i < len; i++) {
                     var file = files[i];
-
-                    /*cl("Filename: " + file.name); cl("Type: " + file.type);  cl("Size: " + file.size + " bytes");*/
-
+                    //Check type
+                    if (file.type !== 'application/x-x509-ca-cert') {
+                        alert('Only .cer files! (application/x-x509-ca-cert)');
+                        return false;
+                    }
+                    //Use file reader
                     var reader = new FileReader();
-                    reader.onload = (function (theFile) {
+
+                    reader.onload = (function (f) {
                         return function (e) {
                             var result     = e.target.result,
                                 asn1       = ASN1.decode(result),
                                 oidsValues = getOIDValues(asn1),
-                                name       = prompt('Upload with success. Enter certificate name', oidsValues.commonName),
+                                name       = prompt('Uploaded with success. Enter certificate name', oidsValues.commonName),
                                 cerf       = JSON.parse(window.localStorage.getItem('cerf')) || {};
                             cerf[name] = result;
                             window.localStorage.setItem('cerf',
@@ -89,11 +111,3 @@ function onReadFile($parse) {
         }
     };
 }
-
-//---INIT
-
-angular
-    .module('cert', [])
-    .controller('MainController', MainController)
-    .directive('onReadFile', onReadFile)
-;

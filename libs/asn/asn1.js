@@ -329,44 +329,44 @@ ASN1.prototype.getValue = function (maxLength) { // a preview of the content (in
         return this.stream.parseOctetString(content, content + len, maxLength);
     }
     switch (this.tag.tagNumber) {
-    case 0x01: // BOOLEAN
-        return (this.stream.get(content) === 0) ? "false" : "true";
-    case 0x02: // INTEGER
-        return this.stream.parseInteger(content, content + len);
-    case 0x03: // BIT_STRING
-        return this.sub ? false :
-            this.stream.parseBitString(content, content + len, maxLength);
-    case 0x04: // OCTET_STRING
-        return this.sub ? false :
-            this.stream.parseOctetString(content, content + len, maxLength);
-    //case 0x05: // NULL
-    case 0x06: // OBJECT_IDENTIFIER
-        return false;
-    //case 0x07: // ObjectDescriptor
-    //case 0x08: // EXTERNAL
-    //case 0x09: // REAL
-    //case 0x0A: // ENUMERATED
-    //case 0x0B: // EMBEDDED_PDV
-    case 0x10: // SEQUENCE
-    case 0x11: // SET
-        return false;
-    case 0x0C: // UTF8String
-        return stringCut(this.stream.parseStringUTF(content, content + len), maxLength);
-    case 0x12: // NumericString
-    case 0x13: // PrintableString
-    case 0x14: // TeletexString
-    case 0x15: // VideotexString
-    case 0x16: // IA5String
-    //case 0x19: // GraphicString
-    case 0x1A: // VisibleString
-    //case 0x1B: // GeneralString
-    //case 0x1C: // UniversalString
-        return stringCut(this.stream.parseStringISO(content, content + len), maxLength);
-    case 0x1E: // BMPString
-        return stringCut(this.stream.parseStringBMP(content, content + len), maxLength);
-    case 0x17: // UTCTime
-    case 0x18: // GeneralizedTime
-        return this.stream.parseTime(content, content + len, (this.tag.tagNumber == 0x17));
+        case 0x01: // BOOLEAN
+            return (this.stream.get(content) === 0) ? "false" : "true";
+        case 0x02: // INTEGER
+            return this.stream.parseInteger(content, content + len);
+        case 0x03: // BIT_STRING
+            return this.sub ? false :
+                this.stream.parseBitString(content, content + len, maxLength);
+        case 0x04: // OCTET_STRING
+            return this.sub ? false :
+                this.stream.parseOctetString(content, content + len, maxLength);
+        //case 0x05: // NULL
+        case 0x06: // OBJECT_IDENTIFIER
+            return false;
+        //case 0x07: // ObjectDescriptor
+        //case 0x08: // EXTERNAL
+        //case 0x09: // REAL
+        //case 0x0A: // ENUMERATED
+        //case 0x0B: // EMBEDDED_PDV
+        case 0x10: // SEQUENCE
+        case 0x11: // SET
+            return false;
+        case 0x0C: // UTF8String
+            return stringCut(this.stream.parseStringUTF(content, content + len), maxLength);
+        case 0x12: // NumericString
+        case 0x13: // PrintableString
+        case 0x14: // TeletexString
+        case 0x15: // VideotexString
+        case 0x16: // IA5String
+        //case 0x19: // GraphicString
+        case 0x1A: // VisibleString
+            //case 0x1B: // GeneralString
+            //case 0x1C: // UniversalString
+            return stringCut(this.stream.parseStringISO(content, content + len), maxLength);
+        case 0x1E: // BMPString
+            return stringCut(this.stream.parseStringBMP(content, content + len), maxLength);
+        case 0x17: // UTCTime
+        case 0x18: // GeneralizedTime
+            return false;//this.stream.parseTime(content, content + len, (this.tag.tagNumber == 0x17));
     }
     return null;
 };

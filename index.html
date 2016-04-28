@@ -26,25 +26,31 @@
             <!-- CERTIFICATES -->
             <div class="col-md-6">
                 <h3>Certificates: {{ main.items.length }}</h3>
-                <ul class="nav nav-pills nav-stacked">
+                <ul id="certificate-list" class="nav nav-pills nav-stacked">
                     <li ng-repeat="(key, value) in main.items">
-                        <span class="btn btn-default btn-block btn-xs" ng-click="main.show(key)">{{key}}</span>
+                        <span class="btn btn-success btn-block btn-xs" ng-click="main.show(key, $event)">{{key}}</span>
                     </li>
                 </ul>
             </div>
 
             <!-- DETAILS -->
             <div class="col-md-6">
-                <h3>Details</h3>
-
-                <div id="details">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li ng-repeat="(key, value) in main.currentParsedItem">
-                            <label>
-                                <span>{{value}}</span>
-                            </label>
-                        </li>
-                    </ul>
+                <div class="container" id="details">
+                    <h3>Details</h3>
+                    <table class="table table-hover" ng-show="main.showCurrentItem">
+                        <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="(key, value) in main.currentParsedItem">
+                            <td>{{value.label}}</td>
+                            <td>{{value.value}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -52,7 +58,7 @@
 
         <!-- TOOLS -->
         <a class="btn btn-success btn-lg btn-block" href="" ng-hide="showAdd"
-           ng-click="showUpload = !showUpload; showAdd = !showAdd">
+           ng-click="showUpload = !showUpload; showAdd = !showAdd;">
             Add new certificate
         </a>
 
@@ -66,12 +72,12 @@
     </div>
 </div>
 
-<script type="text/javascript" src="js/parse.js"></script>
-
 <script type="text/javascript" src="libs/asn/oids.js"></script>
 <script type="text/javascript" src="libs/asn/int10.js"></script>
 <script type="text/javascript" src="libs/asn/asn1.js"></script>
 <script type="text/javascript" src="libs/asn/dom.js"></script>
+
+<script type="text/javascript" src="js/parse.js"></script>
 
 </body>
 </html>
