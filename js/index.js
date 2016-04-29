@@ -68,11 +68,12 @@ function onReadFile($parse) {
 
                 for (; i < len; i++) {
                     var file = files[i];
-                    //Check type
-                    if (file.type !== 'application/x-x509-ca-cert') {
+                    //Check type 
+                    //TODO: test in all browsers
+                    /*if (file.type !== 'application/x-x509-ca-cert') {
                         alert('Only .cer files! (application/x-x509-ca-cert)');
                         return false;
-                    }
+                    }*/
                     //Use file reader
                     var reader = new FileReader();
 
