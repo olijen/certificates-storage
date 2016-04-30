@@ -22,6 +22,7 @@
 <div ng-app="cert">
 
     <div id="main" ng-controller="MainController as main">
+        <h1>Certificates storage</h1>
         <div class="row">
             <!-- CERTIFICATES -->
             <div class="col-md-6">
@@ -64,7 +65,7 @@
 
         <div id="file-upload" ng-show="showUpload" on-read-file="main.uploadEnd($cert)">
             <blockquote>
-                <p>Drug and drop your .cer file here</p>
+                <p>Drag and drop your .cer file here</p>
             </blockquote>
         </div>
 
@@ -75,9 +76,5 @@
 <script type="text/javascript" src="libs/asn/oids.js"></script>
 <script type="text/javascript" src="libs/asn/int10.js"></script>
 <script type="text/javascript" src="libs/asn/asn1.js"></script>
-<script type="text/javascript" src="libs/asn/dom.js"></script>
-
-<script type="text/javascript" src="js/parse.js"></script>
-
 </body>
 </html>

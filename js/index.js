@@ -4,11 +4,12 @@ angular
     .module('cert', [])
     .controller('MainController', MainController)
     .directive('onReadFile', onReadFile)
+    .service('asnBranches', asnBranches)
 ;
 
 //---Main controller
 
-function MainController() {
+function MainController(asnBranches) {
     var main = this;
 
     //Model - binary data
@@ -31,7 +32,7 @@ function MainController() {
     main.show = function (key, e) {
         //Parse item
         var asn1       = ASN1.decode(main.items[key]),
-            oidsValues = getOIDValues(asn1);
+            oidsValues = asnBranches.getOIDValues(asn1);
         //Reload model
         angular.forEach(main.currentParsedItem, function (value, key) {
             main.currentParsedItem[key]['value'] = (oidsValues[key] !== undefined) ? oidsValues[key] : null;
@@ -53,7 +54,7 @@ function MainController() {
 
 //---DIRECTIVE
 
-function onReadFile($parse) {
+function onReadFile($parse, asnBranches) {
     return {
         restrict: 'A',
         scope: false,
@@ -74,6 +75,7 @@ function onReadFile($parse) {
                         alert('Only .cer files! (application/x-x509-ca-cert)');
                         return false;
                     }*/
+                    console.log('Type of file - ' + file.type);
                     //Use file reader
                     var reader = new FileReader();
 
@@ -81,9 +83,10 @@ function onReadFile($parse) {
                         return function (e) {
                             var result     = e.target.result,
                                 asn1       = ASN1.decode(result),
-                                oidsValues = getOIDValues(asn1),
+                                oidsValues = asnBranches.getOIDValues(asn1),
                                 name       = prompt('Uploaded with success. Enter certificate name', oidsValues.commonName),
                                 cerf       = JSON.parse(window.localStorage.getItem('cerf')) || {};
+
                             cerf[name] = result;
                             window.localStorage.setItem('cerf',
                                 JSON.stringify(cerf)
@@ -112,3 +115,39 @@ function onReadFile($parse) {
         }
     };
 }
+
+function asnBranches() {
+    this.getOIDValues = function(asn) {
+        var oidsValues = {};
+        //---owner
+        oidValues = getResults(oidsValues, asn.sub[0].sub[5].sub);
+        //---cert
+        oidValues = getResults(oidsValues, asn.sub[0].sub[3].sub, '_cert');
+        //---time
+        oidValues = getDate(oidsValues, asn.sub[0].sub[4].sub);
+
+        return oidsValues;
+    };
+
+    var getResults = function(result, arr, postfix) {
+        postfix = postfix || '';
+        for (var i = 0, key; i < arr.length; i++) {
+            key = (window.oids[arr[i].sub[0].sub[0].content()] !== undefined)
+                ? window.oids[arr[i].sub[0].sub[0].content()]['d']
+                : arr[i].sub[0].sub[0].content();
+
+            result[key + postfix] = arr[i].sub[0].sub[1].content();
+        }
+        return result;
+    };
+
+    var getDate = function(result, arr) {
+        result['dateStart'] = arr[0].content();
+        result['dateEnd']   = arr[1].content();
+        return result;
+    };
+}
+
+window.onerror = function(message, url, lineNumber) {
+    alert(message);
+};
